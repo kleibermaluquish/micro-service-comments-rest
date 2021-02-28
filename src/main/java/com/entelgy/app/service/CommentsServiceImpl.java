@@ -18,13 +18,17 @@ public class CommentsServiceImpl implements CommentsService {
 	@Autowired
 	private RestTemplate clienteRestTemplate;
 
+	public CommentsServiceImpl(RestTemplate clienteRestTemplate) {
+		this.clienteRestTemplate = clienteRestTemplate;
+	}
+
 	@Override
 	public Response listar() {
 		List<Comments> comments = Arrays.asList(
 				clienteRestTemplate.getForObject("https://jsonplaceholder.typicode.com/comments", Comments[].class));
 
 		List<CommentsResponse> listComments = new ArrayList<CommentsResponse>();
-		
+
 		Response response = new Response();
 
 		for (Comments com : comments) {
@@ -34,9 +38,9 @@ public class CommentsServiceImpl implements CommentsService {
 			mod.setEmail(com.getEmail());
 			listComments.add(mod);
 		}
-		
+
 		response.setData(listComments);
-		
+
 		return response;
 	}
 
